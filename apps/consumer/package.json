@@ -1,0 +1,24 @@
+{
+  "name": "rsbuild-module-federation-enhanced-consumer",
+  "private": true,
+  "scripts": {
+    "dev": "rsbuild dev --open",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview"
+  },
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.9",
+    "@tailwindcss/typography": "^0.5.15",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@module-federation/enhanced": "^0.8.6",
+    "@module-federation/rsbuild-plugin": "^0.8.6",
+    "@rsbuild/core": "^1.1.13",
+    "@rsbuild/plugin-react": "^1.1.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "typescript": "^5.4.5"
+  }
+}

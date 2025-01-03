@@ -1,0 +1,6 @@
+packages:
+  - "server"
+  - "forms"
+  - "apps/*"
+  - "packages/*"
+  - "providers/*"
