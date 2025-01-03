@@ -7,12 +7,12 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "@turbo/gen": "^1.9.7",
-    "eslint": "^7.32.0",
+    "@turbo/gen": "^2.3.3",
+    "eslint": "^9.17.0",
     "eslint-config-custom": "workspace:*",
-    "prettier": "^2.5.1",
+    "prettier": "^3.4.2",
     "turbo": "latest"
   },
-  "packageManager": "pnpm@7.15.0",
+  "packageManager": "pnpm@9.15.2",
   "name": "game-zone"
 }

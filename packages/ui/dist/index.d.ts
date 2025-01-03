@@ -1,3 +1,4 @@
+import * as react_jsx_runtime from 'react/jsx-runtime';
 import React$1 from 'react';
 import * as zustand_middleware from 'zustand/middleware';
 import * as zustand from 'zustand';
@@ -6,7 +7,7 @@ type ShellProps = {
     title: string;
     children: React$1.ReactNode;
 };
-declare function Shell({ title, children }: ShellProps): JSX.Element;
+declare function Shell({ title, children }: ShellProps): react_jsx_runtime.JSX.Element;
 
 type Store = {
     user: string | null;
@@ -31,6 +32,6 @@ type ButtonProps = {
     style?: React.CSSProperties;
     children: React.ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
-declare function Button({ color, style, children, ...props }: ButtonProps): JSX.Element;
+declare function Button({ color, style, children, ...props }: ButtonProps): react_jsx_runtime.JSX.Element;
 
 export { Button, Shell, useAppShell };

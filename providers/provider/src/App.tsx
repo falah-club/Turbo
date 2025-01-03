@@ -7,9 +7,10 @@ import BentoBox from "./app/components/BentoBox";
 import { Heading, Lead, Subheading } from './app/components/text'
 import {Gradient} from "./app/components/gradient";
 import { clsx } from 'clsx'
-import {Button} from './button'
+import {Button} from './Button'
 import SignUpForm from './form'
 import Categories from "./components/Categories";
+import React from 'react';
 
 export function Container({
   className,
