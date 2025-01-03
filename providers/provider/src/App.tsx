@@ -10,7 +10,6 @@ import { clsx } from 'clsx'
 import {Button} from './Button'
 import SignUpForm from './form'
 import Categories from "./components/Categories";
-import React from 'react';
 
 export function Container({
   className,
