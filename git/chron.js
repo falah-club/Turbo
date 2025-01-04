@@ -31,4 +31,17 @@ cron.schedule('0 * * * *', () => {
         }
         console.log(`Git pull output: ${stdout}`);
     });
+
+    // Execute the git pull command
+    exec(`cd .. && pnpm dev`, (error, stdout, stderr) => {
+        if (error) {
+            console.error(`Error during restart: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.error(`restart stderr: ${stderr}`);
+            return;
+        }
+        console.log(`restart output: ${stdout}`);
+    });
 });
