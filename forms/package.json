@@ -3,11 +3,11 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
-    "build": "rsbuild build",
+    "build": "nx rsbuild:build",
     "check": "biome check --write",
-    "dev": "rsbuild dev --open",
+    "dev": "nx rsbuild:dev --open",
     "format": "biome format --write",
-    "preview": "rsbuild preview"
+    "preview": "nx rsbuild:preview"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

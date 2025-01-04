@@ -38,3 +38,7 @@ node_modules/
 
 # Exclude all log files
 *.log
+
+
+.nx/cache
+.nx/workspace-data

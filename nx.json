@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "dev": {
+      "dependsOn": [
+        "^dev"
+      ]
+    }
+  },
+  "defaultBase": "main",
+  "plugins": [
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/rsbuild",
+      "options": {
+        "buildTargetName": "rsbuild:build",
+        "devTargetName": "rsbuild:dev",
+        "previewTargetName": "rsbuild:preview",
+        "inspectTargetName": "inspect",
+        "typecheckTargetName": "typecheck"
+      }
+    }
+  ],
+  "nxCloudId": "67787719332c815be68ca2a6"
+}
