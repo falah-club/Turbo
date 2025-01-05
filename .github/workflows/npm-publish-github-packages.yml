@@ -41,8 +41,10 @@ jobs:
           registry-url: https://npm.pkg.github.com/
       - run: pnpm install 
         working-directory: ./compartments
-      - run: pnpm build ./compartments
-      - run: npm publish ./compartments
+      - run: pnpm build 
+        working-directory: ./compartments
+      - run: npm publish 
+        working-directory: ./compartments
 
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
