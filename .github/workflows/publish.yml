@@ -12,23 +12,19 @@ jobs:
 
       - name: checkout
         uses: actions/checkout@v3
-        with:
-          path: ./kiota
       - name: setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
           registry-url: 'https://npm.pkg.github.com'
       - name: install
-        run: npm install
+        run: cd kiota && npm install
       - name: test
-        working-directory: ./kiota
-        run: npm test
+        run: cd kiota && npm test
       # Publish to npm if this version is not published
       - name: Publish
-        working-directory: ./kiota
         run: |
-          npx can-npm-publish --yes --verbose && npm publish || echo "Does not publish"
+          cd kiota && npx can-npm-publish --yes --verbose && npm publish || echo "Does not publish"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Push tag to GitHub if the version's tag is not tagged
