@@ -22,14 +22,13 @@
     "lib/",
     "src/"
   ],
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "build/index.js",
   "directories": {
     "lib": "lib",
     "test": "test"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "bun build ./src/index.ts --outdir ./build",
     "clean": "rimraf lib/",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
