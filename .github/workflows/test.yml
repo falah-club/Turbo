@@ -7,6 +7,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with:
+         path: ./kiota
       - name: setup Node
         uses: actions/setup-node@v3
         with:
