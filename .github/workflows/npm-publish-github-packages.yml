@@ -42,9 +42,7 @@ jobs:
       - run: pnpm install 
         working-directory: ./compartments
       - run: pnpm build 
-        working-directory: ./compartments
       - run: npm publish 
-        working-directory: ./compartments
 
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
