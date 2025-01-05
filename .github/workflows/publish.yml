@@ -22,16 +22,18 @@ jobs:
       - name: install
         run: npm install
       - name: test
+        working-directory: ./kiota
         run: npm test
       # Publish to npm if this version is not published
       - name: Publish
+        working-directory: ./kiota
         run: |
           npx can-npm-publish --yes --verbose && npm publish || echo "Does not publish"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Push tag to GitHub if the version's tag is not tagged
       - name: set PACKAGE_VERSION
-        run: node -p -e '`PACKAGE_VERSION=${require("./package.json").version}`' >> $GITHUB_ENV
+        run: node -p -e '`PACKAGE_VERSION=${require("./kiota/package.json").version}`' >> $GITHUB_ENV
       - name: package-version-to-git-tag
         uses: pkgdeps/git-tag-action@v2
         with:
