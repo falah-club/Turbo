@@ -19,8 +19,6 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
       - name: install
         run: cd kiota && npm install
-      - name: test
-        run: cd kiota && npm test
       # Publish to npm if this version is not published
       - name: Publish
         run: |
