@@ -29,7 +29,7 @@
     "test": "test"
   },
   "scripts": {
-    "build": "tsc -p .",
+    "build": "tsc",
     "clean": "rimraf lib/",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
