@@ -1,5 +1,5 @@
 {
-  "name": "@falah-club/Turbo",
+  "name": "@falah-club/falah",
   "version": "3.2.0",
   "description": "npm registry to GitHub Package Registry example.",
   "keywords": [
@@ -7,13 +7,13 @@
     "github",
     "npm"
   ],
-  "homepage": "https://github.com/falah-club/Turbo",
+  "homepage": "https://github.com/falah-club/falah",
   "bugs": {
-    "url": "https://github.com/falah-club/Turbo/issues"
+    "url": "https://github.com/falah-club/falah/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Turbo/falah-kit.git"
+    "url": "https://github.com/Turbo/falah.git"
   },
   "license": "MIT",
   "author": "Falah CLub",
