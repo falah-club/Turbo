@@ -39,8 +39,7 @@ lazy_static! {
 async fn get_events() -> Json<Vec<Event>> {
     // Fetch the events from the database
     let events = event::read_events().await;
-
-
+    
     match events {
         Ok(events) => Json(events), // Return the events in JSON format
         Err(_) => Json(vec![]), // Return an empty array if there’s an error

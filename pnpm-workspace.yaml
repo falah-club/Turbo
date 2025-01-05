@@ -3,6 +3,6 @@ packages:
   - "git"
   - "forms"
   - "apps/*"
-  - "compartments"
+  - "falah-kit"
   - "packages/*"
   - "providers/*"
