@@ -7,16 +7,16 @@
     "github",
     "npm"
   ],
-  "homepage": "https://github.com/falah-club/falah-kit",
+  "homepage": "https://github.com/falah-club/Turbo",
   "bugs": {
-    "url": "https://github.com/falah-club/falah-kit/issues"
+    "url": "https://github.com/falah-club/Turbo/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/falah-club/falah-kit.git"
+    "url": "https://github.com/Turbo/falah-kit.git"
   },
   "license": "MIT",
-  "author": "azu",
+  "author": "Falah CLub",
   "files": [
     "bin/",
     "lib/",
