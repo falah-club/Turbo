@@ -1,10 +1,12 @@
-use salvo::oapi::{ToParameters, ToSchema};
-use serde::Deserialize;
+use salvo::oapi::ToSchema;
+use serde::{Deserialize, Serialize};
 use crate::CONN;
 use rusqlite::{Result};
+use salvo::macros::Extractible;
 use tokio::task;
 
-#[derive(Deserialize, ToParameters, Debug)]
+#[derive(Serialize, Deserialize, Extractible, ToSchema,Debug)]
+#[salvo(extract(default_source(from = "body")))]
 pub struct Event {
     pub(crate) uid: String,
     pub(crate) title: String,
@@ -20,7 +22,7 @@ pub struct Event {
     pub(crate) product_id: String,
 }
 
-#[derive(Deserialize, ToSchema, Debug)]
+#[derive(Serialize, Deserialize, Extractible,ToSchema, Debug)]
 pub struct Geo {
     pub(crate) lat: f64,
     pub(crate) lon: f64,

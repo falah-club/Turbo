@@ -1,0 +1,21 @@
+{
+  "name": "compartments",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.15.3",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@microsoft/kiota-abstractions": "1.0.0-preview.78",
+    "@microsoft/kiota-bundle": "1.0.0-preview.78",
+    "@microsoft/kiota-http-fetchlibrary": "1.0.0-preview.78",
+    "@microsoft/kiota-serialization-form": "1.0.0-preview.78",
+    "@microsoft/kiota-serialization-json": "1.0.0-preview.78",
+    "@microsoft/kiota-serialization-multipart": "1.0.0-preview.78",
+    "@microsoft/kiota-serialization-text": "1.0.0-preview.78"
+  }
+}

@@ -1,0 +1,185 @@
+openapi: 3.0.3
+info:
+  title: Falah API 🎯💯🔑
+  description: |-
+    > 🚀 **Why Rust?**
+                A high-performance Rust server powered by the Salvo framework, offering RESTful endpoints for secure and scalable client-server communication.
+                
+  termsOfService: https://petapi.com/terms/
+  contact:
+    name: Admin Admin
+    email: admin@petapi.com
+  version: 1.0.0
+paths:
+  /event:
+    get:
+      tags:
+        - event
+        - pagination
+      summary: Retrieve a list of events
+      description: Fetches a list of events with optional offset and limit for pagination.
+      operationId: server.get_events
+      responses: {}
+    post:
+      tags:
+        - event
+      summary: Create a event
+      description: Creates a new event with the provided data.
+      operationId: server.post_event
+      requestBody:
+        description: Extract form format data from request.
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/server.event.Event'
+          multipart/*:
+            schema:
+              $ref: '#/components/schemas/server.event.Event'
+      responses:
+        '200':
+          description: Ok
+          content:
+            text/plain:
+              schema:
+                type: string
+  /event/{id}:
+    get:
+      tags:
+        - event
+        - slug
+        - crud
+      summary: Read a specific event
+      description: Finds the event with the given id and reads it.
+      operationId: server.get_event
+      parameters:
+        - name: id
+          in: path
+          description: The event ID
+          required: true
+          schema:
+            type: string
+      responses: {}
+    delete:
+      tags:
+        - event
+        - slug
+        - crud
+      summary: Delete a specific event
+      description: Finds the event with the given id and deletes it.
+      operationId: server.delete_event
+      parameters:
+        - name: id
+          in: path
+          description: The event ID
+          required: true
+          schema:
+            type: string
+      responses: {}
+    patch:
+      tags:
+        - event
+        - slug
+        - crud
+      summary: Update a specific event
+      description: Finds the event with the given id and updates it with the provided data.
+      operationId: server.patch_event
+      parameters:
+        - name: id
+          in: path
+          description: The event ID
+          required: true
+          schema:
+            type: string
+      responses: {}
+  /subscription/calendar:
+    get:
+      tags:
+        - subscription
+        - slug
+        - calendar
+        - crud
+      summary: Generate a calendar of events
+      description: Queries the database for events and creates a ical.
+      operationId: server.event_calendar_subscription
+      responses: {}
+  /subscription/feed:
+    get:
+      tags:
+        - subscription
+        - slug
+        - feed
+        - crud
+      summary: Generate a rss feed of events
+      description: Queries the database for events and creates a rss feed.
+      operationId: server.event_feed_subscription
+      responses: {}
+components:
+  schemas:
+    server.event.Event:
+      type: object
+      required:
+        - uid
+        - title
+        - description
+        - url
+        - geo
+        - categories
+        - start
+        - duration
+        - status
+        - sequence
+        - product_id
+      properties:
+        categories:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        duration:
+          type: array
+          items:
+            allOf:
+              - type: integer
+                format: int32
+              - type: integer
+                format: int32
+        geo:
+          $ref: '#/components/schemas/server.event.Geo'
+        location:
+          type: string
+          nullable: true
+        product_id:
+          type: string
+        sequence:
+          type: integer
+          format: int32
+        start:
+          type: array
+          items:
+            type: integer
+            format: int32
+        status:
+          type: string
+        title:
+          type: string
+        uid:
+          type: string
+        url:
+          type: string
+    server.event.Geo:
+      type: object
+      required:
+        - lat
+        - lon
+        - radius
+      properties:
+        lat:
+          type: number
+          format: double
+        lon:
+          type: number
+          format: double
+        radius:
+          type: integer
+          format: int32

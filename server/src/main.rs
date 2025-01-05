@@ -4,11 +4,15 @@ mod info;
 mod event;
 mod auth;
 
+use std::fs::File;
+use std::io::Write;
 use std::mem;
+use std::path::Path;
 use lazy_static::lazy_static;
 use std::sync::Mutex;
 use rusqlite::{params, Connection, Result};
-use salvo::http::Method;
+use salvo::oapi::__private::serde_json::json;
+use salvo::oapi::extract::JsonBody;
 use salvo::prelude::*;
 use crate::event::{Event, Geo};
 use crate::html::INDEX_HTML;
@@ -27,9 +31,6 @@ lazy_static! {
     summary = "Retrieve a list of events",
     description = "Fetches a list of events with optional offset and limit for pagination.",
     tags("event", "pagination"),
-    parameters(
-        ("offset", description = "Offset is an optional query paramter."),
-    )
 )]
 async fn get_events(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
     // let id = _req.param::<i64>("id").unwrap();
@@ -42,12 +43,13 @@ async fn get_events(_req: &mut Request, _depot: &mut Depot, res: &mut Response, 
     tags("event", "crud"),
     summary = "Create a event",
     tags("event"),
-    parameters(Event),
-
+    description = "Creates a new event with the provided data.",
 )]
-async fn post_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
-    res.render("Hello world");
+async fn post_event(json: JsonBody<Event>) -> String {
+    let event = json.into_inner();
+    format!("Updated user with ID: {}", event.uid)
 }
+
 
 // Endpoint to get a specific event by ID
 #[endpoint(
@@ -55,7 +57,7 @@ async fn post_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response, 
     description = "Finds the event with the given id and reads it.",
     tags("event", "slug", "crud"),
     parameters(
-        ("offset", description = "Offset is an optional query paramter."),
+        ("id" = String, Path, description = "The event ID")
     )
 )]
 async fn get_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
@@ -69,7 +71,7 @@ async fn get_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _
     description = "Finds the event with the given id and updates it with the provided data.",
     tags("event", "slug", "crud"),
     parameters(
-        ("offset", description = "Offset is an optional query paramter."),
+        ("id" = String, Path, description = "The event ID")
     )
 )]
 async fn patch_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
@@ -83,7 +85,7 @@ async fn patch_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response,
     description = "Finds the event with the given id and deletes it.",
     tags("event", "slug", "crud"),
     parameters(
-        ("offset", description = "Offset is an optional query paramter."),
+        ("id" = String, Path, description = "The event ID")
     )
 )]
 async fn delete_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
@@ -96,9 +98,7 @@ async fn delete_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response
     tags("subscription","slug", "feed", "crud"),
     summary = "Generate a rss feed of events",
     description = "Queries the database for events and creates a rss feed.",
-    parameters(
-        ("offset", description = "Offset is an optional query paramter."),
-    )
+
 )]
 async fn event_feed_subscription(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
     let events = event::read_events().await;
@@ -112,9 +112,7 @@ async fn event_feed_subscription(_req: &mut Request, _depot: &mut Depot, res: &m
     tags("subscription","slug", "calendar", "crud"),
     summary = "Generate a calendar of events",
     description = "Queries the database for events and creates a ical.",
-    parameters(
-        ("offset", description = "Offset is an optional query paramter."),
-    )
+
 )]
 async fn event_calendar_subscription(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
     let events = event::read_events().await;
@@ -123,6 +121,9 @@ async fn event_calendar_subscription(_req: &mut Request, _depot: &mut Depot, res
     res.add_header("Content-Type", "text/calendar", false).unwrap();    // Render the ICS data as the response body
     res.render(ics_data);
 }
+
+
+
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -232,8 +233,30 @@ async fn main() -> Result<()> {
         );
     // Now you can call the function from api_info.rs
     let api_info = info::get_api_info();
-    let doc = OpenApi::with_info(api_info).merge_router(&router);
+    let doc = OpenApi::with_info(api_info)
+        .merge_router(&router);
 
+    // Attempt to convert `doc` to YAML
+    let yaml_result = doc.to_yaml();
+
+    match yaml_result {
+        Ok(yaml_string) => {
+            // If YAML conversion succeeded, attempt to create the file
+            let path = Path::new("../_openapi.yaml");
+            match File::create(path) {
+                Ok(mut file) => {
+                    // If file creation succeeded, attempt to write YAML to the file
+                    if let Err(e) = file.write_all(yaml_string.as_bytes()) {
+                        eprintln!("Failed to write to file: {}", e);
+                    } else {
+                        println!("YAML successfully written to {:?}", path);
+                    }
+                }
+                Err(e) => eprintln!("Failed to create file: {}", e),
+            }
+        }
+        Err(e) => eprintln!("Failed to convert to YAML: {}", e),
+    }
     // Add OpenAPI documentation routes
     router = router
         .unshift(doc.into_router("/api-doc/openapi.json"))
@@ -244,16 +267,16 @@ async fn main() -> Result<()> {
         );
 
 
-    let cors = Cors::new()
-        .allow_origin("https://salvo.rs")
-        .allow_methods(vec![Method::GET, Method::POST, Method::DELETE])
-        .into_handler();
-
-    let router = Router::new().get(hello);
-    let service = Service::new(router).hoop(cors);
-
-    let acceptor = TcpListener::new("127.0.0.1:5800").bind().await;
-    Server::new(acceptor).serve(service).await;
+//    let cors = Cors::new()
+//        .allow_origin("https://salvo.rs")
+//        .allow_methods(vec![Method::GET, Method::POST, Method::DELETE])
+//        .into_handler();
+//
+//    let router = Router::new().get(hello);
+//    let service = Service::new(router).hoop(cors);
+//
+//    let acceptor = TcpListener::new("127.0.0.1:5800").bind().await;
+//    Server::new(acceptor).serve(service).await;
 
     // Start the server
     let acceptor = TcpListener::new("127.0.0.1:5800").bind().await;
