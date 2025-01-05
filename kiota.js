@@ -77,8 +77,8 @@ function main() {
 
     // Step 1: Down-convert the OpenAPI 3.1 specification to 3.0
     console.log("Making sure the client is at its latest change");
-    checkCommand('git');
-    executeCommand(`git submodule update --recursive`);
+    checkCommand('rm');
+    executeCommand(`rm -rf kiota/client`);
 
 
     // Step 1: Down-convert the OpenAPI 3.1 specification to 3.0
