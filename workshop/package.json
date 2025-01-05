@@ -1,0 +1,15 @@
+{
+  "name": "workshop",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+   "workshop": "bun index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@falah-club/falah-kit": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

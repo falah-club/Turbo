@@ -71,15 +71,9 @@ function main() {
 
     const inputFile = '_openapi.yaml';
     const outputFile = 'openapi-3.0.yaml';
-    const outputDir = './falah-kit/client';
+    const outputDir = './kiota/client';
     const serverUrl = process.env.SERVER_URL;
     const clientName = process.env.CLIENT_NAME;
-
-try {
-    execSync("git clone https://github.com/falah-club/falah-kit", { stdio: 'inherit' });
-} catch (e) {
-    console.log(e)
-}
 
     // Step 1: Down-convert the OpenAPI 3.1 specification to 3.0
     console.log("Making sure the client is at its latest change");
@@ -113,7 +107,14 @@ try {
     checkCommand('kiota');
     executeCommand(`kiota info -d "./openapi-3.0.yaml" -l TypeScript`);
 
-    console.log("Client generation completed successfully!");
+
+
+    // Step 5: Generate TypeScript client using Kiota
+    console.log("Deleting open api...");
+    checkCommand('rm');
+    executeCommand(`rm -rf _openapi.yaml`);
+
+    console.log("Deleting the old spec!");
 
 }
 

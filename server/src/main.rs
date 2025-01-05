@@ -36,14 +36,10 @@ lazy_static! {
         (status_code = 200, description = "Success response", body = Event, description = "Array of events")
     )
 )]
-async fn get_events() -> Json<Vec<Event>> {
+async fn get_events( res: &mut Response) {
     // Fetch the events from the database
     let events = event::read_events().await;
-
-    match events {
-        Ok(events) => Json(events), // Return the events in JSON format
-        Err(_) => Json(vec![]), // Return an empty array if there’s an error
-    }
+    res.render(Json(events))
 }
 
 // Endpoint to create a new event
@@ -56,9 +52,9 @@ async fn get_events() -> Json<Vec<Event>> {
         (status_code = 409, description = "error response"),
     )
    )]
-async fn post_event(json: JsonBody<Event>, res: &mut Response)-> Result<StatusCode, Error> {
+async fn post_event(json: JsonBody<Event>, res: &mut Response) {
     let event = json.into_inner();
-    Ok(StatusCode::CREATED)
+    res.render(&format!("Hello {:?} world", event))
 }
 
 

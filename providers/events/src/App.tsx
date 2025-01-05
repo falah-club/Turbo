@@ -9,6 +9,74 @@ import { clsx } from 'clsx'
 import {Button} from './components/Button'
 import SignUpForm from './form'
 import Categories from "./components/Categories";
+import useEvents from "./hooks/useEvents";
+import React, { useEffect } from 'react';
+
+export default function App() {
+  const { events, loading, error, getEvents } = useEvents();
+
+  // Fetch events on component mount
+  useEffect(() => {
+    const fetchEvents = async () => {
+      await getEvents();
+    };
+
+    fetchEvents();
+  }, [getEvents]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  return (
+    <EventList events={events}/>
+  );
+}
+
+const EventList = ({events}) => {
+  const eventKeys = Object.keys(events);
+
+  return (
+    <div>
+      {eventKeys.map(key => {
+        const event = events[key];
+
+        // Format the start date (assuming it's in the format [year, month, day, hour, minute])
+        const startDate = new Date(
+          event.start[0], // year
+          event.start[1] - 1, // month (0-based index)
+          event.start[2], // day
+          event.start[3], // hour
+          event.start[4] // minute
+        );
+
+        // Format duration (assuming duration is in hours and minutes)
+        const durationHours = event.duration[0];
+        const durationMinutes = event.duration[1];
+
+        return (
+          <div key={event.uid} className="event-card">
+            <h2>{event.title}</h2>
+            <p><strong>Description:</strong> {event.description}</p>
+            <p><strong>Location:</strong> {event.location}</p>
+            <p><strong>Start Date:</strong> {startDate.toLocaleString()}</p>
+            <p><strong>Duration:</strong> {durationHours} hours {durationMinutes} minutes</p>
+            <p><strong>Status:</strong> {event.status}</p>
+            <p><strong>Categories:</strong> {event.categories.join(", ")}</p>
+            <p><strong>Product ID:</strong> {event.product_id}</p>
+            <p><strong>Location Coordinates:</strong> Lat: {event.geo.lat}, Lon: {event.geo.lon}</p>
+            <p><strong>Radius:</strong> {event.geo.radius} meters</p>
+            <a href={event.url} target="_blank" rel="noopener noreferrer">Event Link</a>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 export function Container({
   className,
@@ -24,17 +92,6 @@ export function Container({
   )
 }
 
-const App = () => (
-  <Grid/>
-//  <div>
-//    <span
-//      className="translate-x-0 inline-block size-5 rounded-full bg-white shadow transform transition ease-in-out duration-200"
-//    ></span>
-//    <h1 className="text-color-red">Basic Host-Remote</h1>
-//    <h2>Remote</h2>
-//    <LocalButton />
-//  </div>
-);
 
 const featuredPost = {
   id: 1,

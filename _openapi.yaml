@@ -13,15 +13,21 @@ paths:
       tags:
       - event
       - pagination
+      - crud
       summary: Retrieve a list of events
       description: Fetches a list of events with optional offset and limit for pagination.
       operationId: server.get_events
       responses:
         '200':
-          description: success response
+          description: Array of events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server.event.Event'
     post:
       tags:
       - event
+      - crud
       summary: Create a event
       description: Creates a new event with the provided data.
       operationId: server.post_event
@@ -32,8 +38,10 @@ paths:
             schema:
               $ref: '#/components/schemas/server.event.Event'
       responses:
-        '200':
+        '201':
           description: success response
+        '409':
+          description: error response
   /event/{id}:
     get:
       tags:

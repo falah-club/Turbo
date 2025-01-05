@@ -16,7 +16,7 @@ var __toESM = (mod, isNodeMode, target) => {
 };
 var __commonJS = (cb, mod) => () => (mod || cb((mod = { exports: {} }).exports, mod), mod.exports);
 
-// node_modules/tinyduration/dist/index.js
+// ../node_modules/.pnpm/tinyduration@3.3.1/node_modules/tinyduration/dist/index.js
 var require_dist = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.serialize = exports.parse = exports.MultipleFractionsError = exports.InvalidDurationError = undefined;
@@ -116,6 +116,71 @@ var require_dist = __commonJS((exports) => {
 });
 
 // client/models/index.ts
+function createEvent_durationFromDiscriminatorValue(parseNode) {
+  return deserializeIntoEvent_duration;
+}
+function createEventFromDiscriminatorValue(parseNode) {
+  return deserializeIntoEvent;
+}
+function createGeoFromDiscriminatorValue(parseNode) {
+  return deserializeIntoGeo;
+}
+function deserializeIntoEvent(event = {}) {
+  return {
+    categories: (n) => {
+      event.categories = n.getCollectionOfPrimitiveValues();
+    },
+    description: (n) => {
+      event.description = n.getStringValue();
+    },
+    duration: (n) => {
+      event.duration = n.getCollectionOfObjectValues(createEvent_durationFromDiscriminatorValue);
+    },
+    geo: (n) => {
+      event.geo = n.getObjectValue(createGeoFromDiscriminatorValue);
+    },
+    location: (n) => {
+      event.location = n.getStringValue();
+    },
+    product_id: (n) => {
+      event.productId = n.getStringValue();
+    },
+    sequence: (n) => {
+      event.sequence = n.getNumberValue();
+    },
+    start: (n) => {
+      event.start = n.getCollectionOfPrimitiveValues();
+    },
+    status: (n) => {
+      event.status = n.getStringValue();
+    },
+    title: (n) => {
+      event.title = n.getStringValue();
+    },
+    uid: (n) => {
+      event.uid = n.getStringValue();
+    },
+    url: (n) => {
+      event.url = n.getStringValue();
+    }
+  };
+}
+function deserializeIntoEvent_duration(event_duration = {}) {
+  return {};
+}
+function deserializeIntoGeo(geo = {}) {
+  return {
+    lat: (n) => {
+      geo.lat = n.getNumberValue();
+    },
+    lon: (n) => {
+      geo.lon = n.getNumberValue();
+    },
+    radius: (n) => {
+      geo.radius = n.getNumberValue();
+    }
+  };
+}
 function serializeEvent(writer, event = {}) {
   if (event) {
     writer.writeCollectionOfPrimitiveValues("categories", event.categories);
@@ -178,13 +243,13 @@ var EventRequestBuilderNavigationMetadata = {
 var EventRequestBuilderRequestsMetadata = {
   get: {
     uriTemplate: EventRequestBuilderUriTemplate,
-    adapterMethodName: "sendPrimitive",
-    responseBodyFactory: "ArrayBuffer"
+    responseBodyContentType: "application/json",
+    adapterMethodName: "send",
+    responseBodyFactory: createEventFromDiscriminatorValue
   },
   post: {
     uriTemplate: EventRequestBuilderUriTemplate,
-    adapterMethodName: "sendPrimitive",
-    responseBodyFactory: "ArrayBuffer",
+    adapterMethodName: "sendNoResponseContent",
     requestBodyContentType: "application/json",
     requestBodySerializer: serializeEvent,
     requestInformationContentSetMethod: "setContentFromParsable"
@@ -220,7 +285,7 @@ var SubscriptionRequestBuilderNavigationMetadata = {
     requestsMetadata: FeedRequestBuilderRequestsMetadata
   }
 };
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/parseNodeFactoryRegistry.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/parseNodeFactoryRegistry.js
 class ParseNodeFactoryRegistry {
   constructor() {
     this.contentTypeAssociatedFactories = new Map;
@@ -250,7 +315,7 @@ class ParseNodeFactoryRegistry {
 }
 ParseNodeFactoryRegistry.defaultInstance = new ParseNodeFactoryRegistry;
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/serializationWriterFactoryRegistry.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/serializationWriterFactoryRegistry.js
 class SerializationWriterFactoryRegistry {
   constructor() {
     this.contentTypeAssociatedFactories = new Map;
@@ -276,7 +341,7 @@ class SerializationWriterFactoryRegistry {
   }
 }
 SerializationWriterFactoryRegistry.defaultInstance = new SerializationWriterFactoryRegistry;
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/parseNodeProxyFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/parseNodeProxyFactory.js
 class ParseNodeProxyFactory {
   getValidContentType() {
     return this._concrete.getValidContentType();
@@ -308,7 +373,7 @@ class ParseNodeProxyFactory {
     return node;
   }
 }
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/serializationWriterProxyFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/serializationWriterProxyFactory.js
 class SerializationWriterProxyFactory {
   getValidContentType() {
     return this._concrete.getValidContentType();
@@ -348,7 +413,7 @@ class SerializationWriterProxyFactory {
     return writer;
   }
 }
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedNode.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedNode.js
 var createUntypedNodeFromDiscriminatorValue = (_parseNode) => {
   return deserializeIntoUntypedNode;
 };
@@ -366,7 +431,7 @@ var deserializeIntoUntypedNode = (untypedNode = {}) => {
     }
   };
 };
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedNumber.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedNumber.js
 function isUntypedNumber(node) {
   const proposedNode = node;
   return proposedNode && typeof proposedNode.value === "number";
@@ -377,7 +442,7 @@ function createUntypedNumber(value) {
     getValue: () => value
   };
 }
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedArray.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedArray.js
 var isUntypedArray = (node) => {
   const proposedNode = node;
   return proposedNode && proposedNode.value instanceof Array && proposedNode.value.every((item) => isUntypedNode(item));
@@ -388,7 +453,7 @@ var createUntypedArray = (value) => {
     getValue: () => value
   };
 };
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedNull.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedNull.js
 function isUntypedNull(node) {
   return node.value === null;
 }
@@ -398,7 +463,7 @@ function createUntypedNull() {
     getValue: () => null
   };
 }
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedObject.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedObject.js
 var isUntypedObject = (node) => {
   const proposedNode = node;
   return proposedNode && proposedNode.value instanceof Object && proposedNode.value instanceof Array === false && Object.values(proposedNode.value).every((item) => isUntypedNode(item));
@@ -409,7 +474,7 @@ var createUntypedObject = (value) => {
     getValue: () => value
   };
 };
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedString.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedString.js
 function isUntypedString(node) {
   const proposedNode = node;
   return proposedNode && typeof proposedNode.value === "string";
@@ -420,7 +485,7 @@ function createUntypedString(value) {
     getValue: () => value
   };
 }
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedBoolean.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/serialization/untypedBoolean.js
 function isUntypedBoolean(node) {
   const proposedNode = node;
   return proposedNode && typeof proposedNode.value === "boolean";
@@ -431,7 +496,7 @@ function createUntypedBoolean(value) {
     getValue: () => value
   };
 }
-// node_modules/uuid/dist/esm-browser/stringify.js
+// ../node_modules/.pnpm/uuid@11.0.4/node_modules/uuid/dist/esm-browser/stringify.js
 var byteToHex = [];
 for (let i = 0;i < 256; ++i) {
   byteToHex.push((i + 256).toString(16).slice(1));
@@ -440,7 +505,7 @@ function unsafeStringify(arr, offset = 0) {
   return (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + "-" + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + "-" + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + "-" + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + "-" + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase();
 }
 
-// node_modules/uuid/dist/esm-browser/rng.js
+// ../node_modules/.pnpm/uuid@11.0.4/node_modules/uuid/dist/esm-browser/rng.js
 var getRandomValues;
 var rnds8 = new Uint8Array(16);
 function rng() {
@@ -453,11 +518,11 @@ function rng() {
   return getRandomValues(rnds8);
 }
 
-// node_modules/uuid/dist/esm-browser/native.js
+// ../node_modules/.pnpm/uuid@11.0.4/node_modules/uuid/dist/esm-browser/native.js
 var randomUUID = typeof crypto !== "undefined" && crypto.randomUUID && crypto.randomUUID.bind(crypto);
 var native_default = { randomUUID };
 
-// node_modules/uuid/dist/esm-browser/v4.js
+// ../node_modules/.pnpm/uuid@11.0.4/node_modules/uuid/dist/esm-browser/v4.js
 function v4(options, buf, offset) {
   if (native_default.randomUUID && !buf && !options) {
     return native_default.randomUUID();
@@ -482,7 +547,7 @@ function v4(options, buf, offset) {
   return unsafeStringify(rnds);
 }
 var v4_default = v4;
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/store/inMemoryBackingStore.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/store/inMemoryBackingStore.js
 class InMemoryBackingStore {
   constructor() {
     this.subscriptions = new Map;
@@ -556,18 +621,18 @@ class InMemoryBackingStore {
   }
 }
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/store/inMemoryBackingStoreFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/store/inMemoryBackingStoreFactory.js
 class InMemoryBackingStoreFactory {
   createBackingStore() {
     return new InMemoryBackingStore;
   }
 }
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/store/backingStoreFactorySingleton.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/store/backingStoreFactorySingleton.js
 class BackingStoreFactorySingleton {
 }
 BackingStoreFactorySingleton.instance = new InMemoryBackingStoreFactory;
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/store/backingStoreParseNodeFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/store/backingStoreParseNodeFactory.js
 class BackingStoreParseNodeFactory extends ParseNodeProxyFactory {
   constructor(concrete) {
     super(concrete, (value) => {
@@ -583,7 +648,7 @@ class BackingStoreParseNodeFactory extends ParseNodeProxyFactory {
     });
   }
 }
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/store/backingStoreSerializationWriterProxyFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/store/backingStoreSerializationWriterProxyFactory.js
 class BackingStoreSerializationWriterProxyFactory extends SerializationWriterProxyFactory {
   constructor(concrete) {
     super(concrete, (value) => {
@@ -608,7 +673,7 @@ class BackingStoreSerializationWriterProxyFactory extends SerializationWriterPro
     });
   }
 }
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/store/backedModelProxy.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/store/backedModelProxy.js
 var createBackedModelProxyHandler = () => {
   const backingStore = BackingStoreFactorySingleton.instance.createBackingStore();
   const handler = {
@@ -630,12 +695,12 @@ var createBackedModelProxyHandler = () => {
   };
   return handler;
 };
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/store/backingStoreUtils.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/store/backingStoreUtils.js
 var BackingStoreKey = "backingStoreEnabled";
 function isBackingStoreEnabled(fields) {
   return Object.keys(fields).includes(BackingStoreKey);
 }
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/apiClientBuilder.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/apiClientBuilder.js
 function registerDefaultSerializer(type) {
   if (!type)
     throw new Error("Type is required");
@@ -687,13 +752,13 @@ function enableBackingStoreForSerializationRegistry(registry) {
     }
   }
 }
-// node_modules/@opentelemetry/api/build/esm/platform/browser/globalThis.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/platform/browser/globalThis.js
 var _globalThis = typeof globalThis === "object" ? globalThis : typeof self === "object" ? self : typeof window === "object" ? window : typeof global === "object" ? global : {};
 
-// node_modules/@opentelemetry/api/build/esm/version.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/version.js
 var VERSION = "1.9.0";
 
-// node_modules/@opentelemetry/api/build/esm/internal/semver.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/internal/semver.js
 var re = /^(\d+)\.(\d+)\.(\d+)(-(.+))?$/;
 function _makeCompatibilityCheck(ownVersion) {
   var acceptedVersions = new Set([ownVersion]);
@@ -760,7 +825,7 @@ function _makeCompatibilityCheck(ownVersion) {
 }
 var isCompatible = _makeCompatibilityCheck(VERSION);
 
-// node_modules/@opentelemetry/api/build/esm/internal/global-utils.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/internal/global-utils.js
 var major = VERSION.split(".")[0];
 var GLOBAL_OPENTELEMETRY_API_KEY = Symbol.for("opentelemetry.js.api." + major);
 var _global = _globalThis;
@@ -802,7 +867,7 @@ function unregisterGlobal(type, diag) {
   }
 }
 
-// node_modules/@opentelemetry/api/build/esm/diag/ComponentLogger.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/diag/ComponentLogger.js
 var __read = function(o, n) {
   var m = typeof Symbol === "function" && o[Symbol.iterator];
   if (!m)
@@ -885,7 +950,7 @@ function logProxy(funcName, namespace, args) {
   return logger[funcName].apply(logger, __spreadArray([], __read(args), false));
 }
 
-// node_modules/@opentelemetry/api/build/esm/diag/types.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/diag/types.js
 var DiagLogLevel;
 (function(DiagLogLevel2) {
   DiagLogLevel2[DiagLogLevel2["NONE"] = 0] = "NONE";
@@ -897,7 +962,7 @@ var DiagLogLevel;
   DiagLogLevel2[DiagLogLevel2["ALL"] = 9999] = "ALL";
 })(DiagLogLevel || (DiagLogLevel = {}));
 
-// node_modules/@opentelemetry/api/build/esm/diag/internal/logLevelLogger.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/diag/internal/logLevelLogger.js
 function createLogLevelDiagLogger(maxLevel, logger) {
   if (maxLevel < DiagLogLevel.NONE) {
     maxLevel = DiagLogLevel.NONE;
@@ -922,7 +987,7 @@ function createLogLevelDiagLogger(maxLevel, logger) {
   };
 }
 
-// node_modules/@opentelemetry/api/build/esm/api/diag.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/api/diag.js
 var __read2 = function(o, n) {
   var m = typeof Symbol === "function" && o[Symbol.iterator];
   if (!m)
@@ -1017,7 +1082,7 @@ var DiagAPI = function() {
   return DiagAPI2;
 }();
 
-// node_modules/@opentelemetry/api/build/esm/context/context.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/context/context.js
 function createContextKey(description) {
   return Symbol.for(description);
 }
@@ -1043,7 +1108,7 @@ var BaseContext = function() {
 }();
 var ROOT_CONTEXT = new BaseContext;
 
-// node_modules/@opentelemetry/api/build/esm/context/NoopContextManager.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/context/NoopContextManager.js
 var __read3 = function(o, n) {
   var m = typeof Symbol === "function" && o[Symbol.iterator];
   if (!m)
@@ -1101,7 +1166,7 @@ var NoopContextManager = function() {
   return NoopContextManager2;
 }();
 
-// node_modules/@opentelemetry/api/build/esm/api/context.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/api/context.js
 var __read4 = function(o, n) {
   var m = typeof Symbol === "function" && o[Symbol.iterator];
   if (!m)
@@ -1172,14 +1237,14 @@ var ContextAPI = function() {
   return ContextAPI2;
 }();
 
-// node_modules/@opentelemetry/api/build/esm/trace/trace_flags.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/trace/trace_flags.js
 var TraceFlags;
 (function(TraceFlags2) {
   TraceFlags2[TraceFlags2["NONE"] = 0] = "NONE";
   TraceFlags2[TraceFlags2["SAMPLED"] = 1] = "SAMPLED";
 })(TraceFlags || (TraceFlags = {}));
 
-// node_modules/@opentelemetry/api/build/esm/trace/invalid-span-constants.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/trace/invalid-span-constants.js
 var INVALID_SPANID = "0000000000000000";
 var INVALID_TRACEID = "00000000000000000000000000000000";
 var INVALID_SPAN_CONTEXT = {
@@ -1188,7 +1253,7 @@ var INVALID_SPAN_CONTEXT = {
   traceFlags: TraceFlags.NONE
 };
 
-// node_modules/@opentelemetry/api/build/esm/trace/NonRecordingSpan.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/trace/NonRecordingSpan.js
 var NonRecordingSpan = function() {
   function NonRecordingSpan2(_spanContext) {
     if (_spanContext === undefined) {
@@ -1230,7 +1295,7 @@ var NonRecordingSpan = function() {
   return NonRecordingSpan2;
 }();
 
-// node_modules/@opentelemetry/api/build/esm/trace/context-utils.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/trace/context-utils.js
 var SPAN_KEY = createContextKey("OpenTelemetry Context Key SPAN");
 function getSpan(context) {
   return context.getValue(SPAN_KEY) || undefined;
@@ -1252,7 +1317,7 @@ function getSpanContext(context) {
   return (_a = getSpan(context)) === null || _a === undefined ? undefined : _a.spanContext();
 }
 
-// node_modules/@opentelemetry/api/build/esm/trace/spancontext-utils.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/trace/spancontext-utils.js
 var VALID_TRACEID_REGEX = /^([0-9a-f]{32})$/i;
 var VALID_SPANID_REGEX = /^[0-9a-f]{16}$/i;
 function isValidTraceId(traceId) {
@@ -1268,7 +1333,7 @@ function wrapSpanContext(spanContext) {
   return new NonRecordingSpan(spanContext);
 }
 
-// node_modules/@opentelemetry/api/build/esm/trace/NoopTracer.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/trace/NoopTracer.js
 var contextApi = ContextAPI.getInstance();
 var NoopTracer = function() {
   function NoopTracer2() {
@@ -1315,7 +1380,7 @@ function isSpanContext(spanContext) {
   return typeof spanContext === "object" && typeof spanContext["spanId"] === "string" && typeof spanContext["traceId"] === "string" && typeof spanContext["traceFlags"] === "number";
 }
 
-// node_modules/@opentelemetry/api/build/esm/trace/ProxyTracer.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracer.js
 var NOOP_TRACER = new NoopTracer;
 var ProxyTracer = function() {
   function ProxyTracer2(_provider, name, version, options) {
@@ -1345,7 +1410,7 @@ var ProxyTracer = function() {
   return ProxyTracer2;
 }();
 
-// node_modules/@opentelemetry/api/build/esm/trace/NoopTracerProvider.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/trace/NoopTracerProvider.js
 var NoopTracerProvider = function() {
   function NoopTracerProvider2() {
   }
@@ -1355,7 +1420,7 @@ var NoopTracerProvider = function() {
   return NoopTracerProvider2;
 }();
 
-// node_modules/@opentelemetry/api/build/esm/trace/ProxyTracerProvider.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/trace/ProxyTracerProvider.js
 var NOOP_TRACER_PROVIDER = new NoopTracerProvider;
 var ProxyTracerProvider = function() {
   function ProxyTracerProvider2() {
@@ -1378,14 +1443,14 @@ var ProxyTracerProvider = function() {
   return ProxyTracerProvider2;
 }();
 
-// node_modules/@opentelemetry/api/build/esm/trace/status.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/trace/status.js
 var SpanStatusCode;
 (function(SpanStatusCode2) {
   SpanStatusCode2[SpanStatusCode2["UNSET"] = 0] = "UNSET";
   SpanStatusCode2[SpanStatusCode2["OK"] = 1] = "OK";
   SpanStatusCode2[SpanStatusCode2["ERROR"] = 2] = "ERROR";
 })(SpanStatusCode || (SpanStatusCode = {}));
-// node_modules/@opentelemetry/api/build/esm/api/trace.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/api/trace.js
 var API_NAME3 = "trace";
 var TraceAPI = function() {
   function TraceAPI2() {
@@ -1425,10 +1490,10 @@ var TraceAPI = function() {
   return TraceAPI2;
 }();
 
-// node_modules/@opentelemetry/api/build/esm/trace-api.js
+// ../node_modules/.pnpm/@opentelemetry+api@1.9.0/node_modules/@opentelemetry/api/build/esm/trace-api.js
 var trace = TraceAPI.getInstance();
 
-// node_modules/@std-uritemplate/std-uritemplate/dist/index.mjs
+// ../node_modules/.pnpm/@std-uritemplate+std-uritemplate@2.0.1/node_modules/@std-uritemplate/std-uritemplate/dist/index.mjs
 class StdUriTemplate {
   static expand(template, substitutions) {
     return StdUriTemplate.expandImpl(template, substitutions);
@@ -1833,7 +1898,7 @@ class StdUriTemplate {
   }
 }
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/dateOnly.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/dateOnly.js
 class DateOnly {
   constructor({ year = 0, month = 1, day = 1 }) {
     this.day = day;
@@ -1877,7 +1942,7 @@ function formatSegment(segment, digits = 2) {
   return segment.toString().padStart(digits, "0");
 }
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/duration.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/duration.js
 var import_tinyduration = __toESM(require_dist(), 1);
 
 class Duration {
@@ -1940,7 +2005,7 @@ class Duration {
   }
 }
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/recordWithCaseInsensitiveKeys.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/recordWithCaseInsensitiveKeys.js
 function dictionaryWithCanonicalKeys(canon) {
   const keysNormalizationMap = new Map;
   return new Proxy({}, {
@@ -1982,7 +2047,7 @@ function createRecordWithCaseInsensitiveKeys() {
   return record;
 }
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/headers.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/headers.js
 class Headers extends Map {
   constructor(entries) {
     super();
@@ -2126,7 +2191,7 @@ class Headers extends Map {
   }
 }
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/utils/guidUtils.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/utils/guidUtils.js
 var guidValidator = new RegExp("^[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$", "i");
 var parseGuidString = (source) => {
   if (source && guidValidator.test(source)) {
@@ -2143,7 +2208,7 @@ var gen = (count) => {
   return out;
 };
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/multipartBody.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/multipartBody.js
 class MultipartBody {
   constructor() {
     this._parts = {};
@@ -2194,7 +2259,7 @@ class MultipartBody {
   }
 }
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/timeOnly.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/timeOnly.js
 class TimeOnly {
   constructor({ hours = 0, minutes = 0, seconds = 0, picoseconds = 0 }) {
     if (hours < 0 || hours > 23) {
@@ -2257,7 +2322,7 @@ class TimeOnly {
   }
 }
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/requestInformation.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/requestInformation.js
 class RequestInformation {
   constructor(httpMethod, urlTemplate, pathParameters) {
     this.pathParameters = createRecordWithCaseInsensitiveKeys();
@@ -2465,7 +2530,7 @@ RequestInformation.contentTypeHeader = "Content-Type";
 RequestInformation.tracerKey = "@microsoft/kiota-abstractions";
 RequestInformation.requestTypeKey = "com.microsoft.kiota.request.type";
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/getPathParameters.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/getPathParameters.js
 var getPathParameters = (parameters) => {
   const result = {};
   if (typeof parameters === "string") {
@@ -2480,7 +2545,7 @@ var getPathParameters = (parameters) => {
   return result;
 };
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/httpMethod.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/httpMethod.js
 var HttpMethod;
 (function(HttpMethod2) {
   HttpMethod2["GET"] = "GET";
@@ -2494,7 +2559,7 @@ var HttpMethod;
   HttpMethod2["PUT"] = "PUT";
 })(HttpMethod || (HttpMethod = {}));
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/apiClientProxifier.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/apiClientProxifier.js
 var sanitizeMethodName = (methodName) => {
   if (methodName.startsWith("to")) {
     return methodName.substring(2).replace("RequestInformation", "").toLowerCase();
@@ -2693,14 +2758,14 @@ var apiClientProxifier = (requestAdapter, pathParameters, navigationMetadata, re
     }
   });
 };
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/apiError.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/apiError.js
 class DefaultApiError extends Error {
   constructor(message) {
     super(message);
     this.responseHeaders = {};
   }
 }
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/utils/enumUtils.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/utils/enumUtils.js
 var reverseRecord = (input) => {
   const entries = Object.entries(input).map(([key, value]) => [value, key]);
   return Object.fromEntries(entries);
@@ -2709,7 +2774,7 @@ var getEnumValueFromStringValue = (stringValue, originalType) => {
   const reversed = reverseRecord(originalType);
   return originalType[reversed[stringValue]];
 };
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/utils/inNodeEnv.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/utils/inNodeEnv.js
 var inNodeEnv = () => {
   try {
     return !!Buffer && !!process;
@@ -2717,16 +2782,16 @@ var inNodeEnv = () => {
     return !(err instanceof ReferenceError);
   }
 };
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/authentication/validateProtocol.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/authentication/validateProtocol.js
 var localhostStrings = new Set(["localhost", "[::1]", "::1", "127.0.0.1"]);
 
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/authentication/apiKeyAuthenticationProvider.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/authentication/apiKeyAuthenticationProvider.js
 var ApiKeyLocation;
 (function(ApiKeyLocation2) {
   ApiKeyLocation2[ApiKeyLocation2["QueryParameter"] = 0] = "QueryParameter";
   ApiKeyLocation2[ApiKeyLocation2["Header"] = 1] = "Header";
 })(ApiKeyLocation || (ApiKeyLocation = {}));
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/authentication/anonymousAuthenticationProvider.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/authentication/anonymousAuthenticationProvider.js
 class AnonymousAuthenticationProvider {
   constructor() {
     this.authenticateRequest = (_, _2) => {
@@ -2734,7 +2799,7 @@ class AnonymousAuthenticationProvider {
     };
   }
 }
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/authentication/baseBearerTokenAuthenticationProvider.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/authentication/baseBearerTokenAuthenticationProvider.js
 class BaseBearerTokenAuthenticationProvider {
   constructor(accessTokenProvider) {
     this.accessTokenProvider = accessTokenProvider;
@@ -2759,7 +2824,7 @@ class BaseBearerTokenAuthenticationProvider {
   }
 }
 BaseBearerTokenAuthenticationProvider.authorizationHeaderKey = "Authorization";
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/nativeResponseHandler.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/nativeResponseHandler.js
 class NativeResponseHandler {
   handleResponse(response, errorMappings) {
     this.value = response;
@@ -2767,7 +2832,7 @@ class NativeResponseHandler {
     return Promise.resolve(undefined);
   }
 }
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/nativeResponseWrapper.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/nativeResponseWrapper.js
 var _a;
 
 class NativeResponseWrapper {
@@ -2783,9 +2848,9 @@ NativeResponseWrapper.CallAndGetNativeWithBody = async (originalCall, requestBod
   await originalCall(requestBody, q, h, o, responseHandler);
   return responseHandler.value;
 };
-// node_modules/@microsoft/kiota-abstractions/dist/es/src/responseHandlerOptions.js
+// ../node_modules/.pnpm/@microsoft+kiota-abstractions@1.0.0-preview.78/node_modules/@microsoft/kiota-abstractions/dist/es/src/responseHandlerOptions.js
 var ResponseHandlerOptionKey = "ResponseHandlerOptionKey";
-// node_modules/@microsoft/kiota-serialization-form/dist/es/src/formParseNode.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-form@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-form/dist/es/src/formParseNode.js
 class FormParseNode {
   constructor(_rawString) {
     this._rawString = _rawString;
@@ -2894,7 +2959,7 @@ class FormParseNode {
     throw new Error("serialization of byt arrays is not supported with URI encoding");
   }
 }
-// node_modules/@microsoft/kiota-serialization-form/dist/es/src/formSerializationWriter.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-form@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-form/dist/es/src/formSerializationWriter.js
 class FormSerializationWriter {
   constructor() {
     this.writer = [];
@@ -3042,7 +3107,7 @@ class FormSerializationWriter {
   }
 }
 FormSerializationWriter.propertySeparator = `&`;
-// node_modules/@microsoft/kiota-serialization-form/dist/es/src/browser/formParseNodeFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-form@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-form/dist/es/src/browser/formParseNodeFactory.js
 class FormParseNodeFactory {
   getValidContentType() {
     return "application/x-www-form-urlencoded";
@@ -3062,7 +3127,7 @@ class FormParseNodeFactory {
     return decoder.decode(content);
   }
 }
-// node_modules/@microsoft/kiota-serialization-form/dist/es/src/formSerializationWriterFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-form@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-form/dist/es/src/formSerializationWriterFactory.js
 class FormSerializationWriterFactory {
   getValidContentType() {
     return "application/x-www-form-urlencoded";
@@ -3076,7 +3141,7 @@ class FormSerializationWriterFactory {
     return new FormSerializationWriter;
   }
 }
-// node_modules/@microsoft/kiota-serialization-json/dist/es/src/jsonParseNode.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-json@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-json/dist/es/src/jsonParseNode.js
 class JsonParseNode {
   constructor(_jsonNode) {
     this._jsonNode = _jsonNode;
@@ -3198,7 +3263,7 @@ class JsonParseNode {
     return;
   }
 }
-// node_modules/@microsoft/kiota-serialization-json/dist/es/src/jsonSerializationWriter.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-json@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-json/dist/es/src/jsonSerializationWriter.js
 class JsonSerializationWriter {
   constructor() {
     this.writer = [];
@@ -3445,7 +3510,7 @@ class JsonSerializationWriter {
   }
 }
 JsonSerializationWriter.propertySeparator = `,`;
-// node_modules/@microsoft/kiota-serialization-json/dist/es/src/browser/jsonParseNodeFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-json@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-json/dist/es/src/browser/jsonParseNodeFactory.js
 class JsonParseNodeFactory {
   getValidContentType() {
     return "application/json";
@@ -3466,7 +3531,7 @@ class JsonParseNodeFactory {
     return JSON.parse(contentAsStr);
   }
 }
-// node_modules/@microsoft/kiota-serialization-json/dist/es/src/jsonSerializationWriterFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-json@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-json/dist/es/src/jsonSerializationWriterFactory.js
 class JsonSerializationWriterFactory {
   getValidContentType() {
     return "application/json";
@@ -3480,7 +3545,7 @@ class JsonSerializationWriterFactory {
     return new JsonSerializationWriter;
   }
 }
-// node_modules/@microsoft/kiota-serialization-multipart/dist/es/src/multipartSerializationWriter.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-multipart@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-multipart/dist/es/src/multipartSerializationWriter.js
 class MultipartSerializationWriter {
   constructor() {
     this.writer = new ArrayBuffer(0);
@@ -3566,7 +3631,7 @@ class MultipartSerializationWriter {
     pipe.set(new Uint8Array(value), previousValue.byteLength);
   }
 }
-// node_modules/@microsoft/kiota-serialization-multipart/dist/es/src/multipartSerializationWriterFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-multipart@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-multipart/dist/es/src/multipartSerializationWriterFactory.js
 class MultipartSerializationWriterFactory {
   getValidContentType() {
     return "multipart/form-data";
@@ -3580,7 +3645,7 @@ class MultipartSerializationWriterFactory {
     return new MultipartSerializationWriter;
   }
 }
-// node_modules/@microsoft/kiota-serialization-text/dist/es/src/textParseNode.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-text@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-text/dist/es/src/textParseNode.js
 class TextParseNode {
   constructor(text) {
     this.text = text;
@@ -3636,7 +3701,7 @@ class TextParseNode {
   }
 }
 TextParseNode.noStructuredDataMessage = "text does not support structured data";
-// node_modules/@microsoft/kiota-serialization-text/dist/es/src/textSerializationWriter.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-text@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-text/dist/es/src/textSerializationWriter.js
 class TextSerializationWriter {
   constructor() {
     this.writer = [];
@@ -3747,7 +3812,7 @@ class TextSerializationWriter {
   }
 }
 TextSerializationWriter.noStructuredDataMessage = "text does not support structured data";
-// node_modules/@microsoft/kiota-serialization-text/dist/es/src/browser/textParseNodeFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-text@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-text/dist/es/src/browser/textParseNodeFactory.js
 class TextParseNodeFactory {
   getValidContentType() {
     return "text/plain";
@@ -3767,7 +3832,7 @@ class TextParseNodeFactory {
     return decoder.decode(arrayBuffer);
   }
 }
-// node_modules/@microsoft/kiota-serialization-text/dist/es/src/textSerializationWriterFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-serialization-text@1.0.0-preview.78/node_modules/@microsoft/kiota-serialization-text/dist/es/src/textSerializationWriterFactory.js
 class TextSerializationWriterFactory {
   getValidContentType() {
     return "text/plain";
@@ -3808,7 +3873,7 @@ var FalahClientNavigationMetadata = {
   }
 };
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/customFetchHandler.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/customFetchHandler.js
 class CustomFetchHandler {
   constructor(customFetch) {
     this.customFetch = customFetch;
@@ -3818,7 +3883,7 @@ class CustomFetchHandler {
   }
 }
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/httpClient.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/httpClient.js
 class HttpClient {
   constructor(customFetch, ...middlewares) {
     this.customFetch = customFetch;
@@ -3844,7 +3909,7 @@ class HttpClient {
   }
 }
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/observabilityOptions.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/observabilityOptions.js
 var ObservabilityOptionKey = "ObservabilityOptionKey";
 
 class ObservabilityOptionsImpl {
@@ -3874,7 +3939,7 @@ function getObservabilityOptionsFromRequest(requestOptions) {
   return;
 }
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/fetchRequestAdapter.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/fetchRequestAdapter.js
 class FetchRequestAdapter {
   getSerializationWriterFactory() {
     return this.serializationWriterFactory;
@@ -4421,7 +4486,7 @@ FetchRequestAdapter.eventResponseHandlerInvokedKey = "com.microsoft.kiota.respon
 FetchRequestAdapter.errorMappingFoundAttributeName = "com.microsoft.kiota.error.mapping_found";
 FetchRequestAdapter.errorBodyFoundAttributeName = "com.microsoft.kiota.error.body_found";
 FetchRequestAdapter.authenticateChallengedEventKey = "com.microsoft.kiota.authenticate_challenge_received";
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/ChaosHandlerData.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/ChaosHandlerData.js
 var methodStatusCode = {
   GET: [429, 500, 502, 503, 504],
   POST: [429, 500, 502, 503, 504, 507],
@@ -4493,14 +4558,14 @@ var httpStatusCode = {
   511: "Network Authentication Required"
 };
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/chaosStrategy.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/chaosStrategy.js
 var ChaosStrategy;
 (function(ChaosStrategy2) {
   ChaosStrategy2[ChaosStrategy2["MANUAL"] = 0] = "MANUAL";
   ChaosStrategy2[ChaosStrategy2["RANDOM"] = 1] = "RANDOM";
 })(ChaosStrategy || (ChaosStrategy = {}));
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/chaosHandler.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/chaosHandler.js
 class ChaosHandler {
   constructor(options, manualMap) {
     this.options = {
@@ -4617,7 +4682,7 @@ class ChaosHandler {
   }
 }
 ChaosHandler.chaosHandlerTriggeredEventKey = "com.microsoft.kiota.chaos_handler_triggered";
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/headersInspectionOptions.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/headersInspectionOptions.js
 var HeadersInspectionOptionsKey = "HeadersInspectionOptionsKey";
 
 class HeadersInspectionOptions {
@@ -4639,7 +4704,7 @@ class HeadersInspectionOptions {
   }
 }
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/headersInspectionHandler.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/headersInspectionHandler.js
 class HeadersInspectionHandler {
   constructor(_options = new HeadersInspectionOptions) {
     this._options = _options;
@@ -4680,7 +4745,7 @@ class HeadersInspectionHandler {
     return response;
   }
 }
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/parametersNameDecodingOptions.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/parametersNameDecodingOptions.js
 var ParametersNameDecodingHandlerOptionsKey = "RetryHandlerOptionKey";
 
 class ParametersNameDecodingHandlerOptions {
@@ -4694,7 +4759,7 @@ class ParametersNameDecodingHandlerOptions {
   }
 }
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/parametersNameDecodingHandler.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/parametersNameDecodingHandler.js
 class ParametersNameDecodingHandler {
   constructor(options = new ParametersNameDecodingHandlerOptions) {
     this.options = options;
@@ -4731,7 +4796,7 @@ class ParametersNameDecodingHandler {
     return (_b = (_a2 = this.next) === null || _a2 === undefined ? undefined : _a2.execute(updatedUrl, requestInit, requestOptions)) !== null && _b !== undefined ? _b : Promise.reject(new Error("The next middleware is not set."));
   }
 }
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/redirectHandlerOptions.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/redirectHandlerOptions.js
 var RedirectHandlerOptionKey = "RedirectHandlerOption";
 
 class RedirectHandlerOptions {
@@ -4758,7 +4823,7 @@ RedirectHandlerOptions.DEFAULT_MAX_REDIRECTS = 5;
 RedirectHandlerOptions.MAX_MAX_REDIRECTS = 20;
 RedirectHandlerOptions.defaultShouldRetry = () => true;
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/redirectHandler.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/redirectHandler.js
 class RedirectHandler {
   constructor(options = new RedirectHandlerOptions) {
     this.options = options;
@@ -4860,7 +4925,7 @@ RedirectHandler.STATUS_CODE_SEE_OTHER = 303;
 RedirectHandler.LOCATION_HEADER = "Location";
 RedirectHandler.AUTHORIZATION_HEADER = "Authorization";
 RedirectHandler.MANUAL_REDIRECT = "manual";
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/utils/headersUtil.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/utils/headersUtil.js
 var getRequestHeader = (options, key) => {
   if (options && options.headers) {
     return options.headers[key];
@@ -4896,7 +4961,7 @@ var appendRequestHeader = (options, key, value, separator = ", ") => {
   }
 };
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/retryHandlerOptions.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/retryHandlerOptions.js
 var RetryHandlerOptionKey = "RetryHandlerOptionKey";
 
 class RetryHandlerOptions {
@@ -4936,7 +5001,7 @@ RetryHandlerOptions.MAX_DELAY = 180;
 RetryHandlerOptions.MAX_MAX_RETRIES = 10;
 RetryHandlerOptions.defaultShouldRetry = () => true;
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/retryHandler.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/retryHandler.js
 class RetryHandler {
   constructor(options = new RetryHandlerOptions) {
     this.options = options;
@@ -5041,10 +5106,10 @@ RetryHandler.RETRY_STATUS_CODES = new Set([
 ]);
 RetryHandler.RETRY_ATTEMPT_HEADER = "Retry-Attempt";
 RetryHandler.RETRY_AFTER_HEADER = "Retry-After";
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/version.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/version.js
 var libraryVersion = "1.0.0-preview.24";
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/userAgentHandlerOptions.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/userAgentHandlerOptions.js
 var UserAgentHandlerOptionsKey = "UserAgentHandlerOptionKey";
 
 class UserAgentHandlerOptions {
@@ -5059,7 +5124,7 @@ class UserAgentHandlerOptions {
   }
 }
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/userAgentHandler.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/userAgentHandler.js
 var USER_AGENT_HEADER_KEY = "User-Agent";
 
 class UserAgentHandler {
@@ -5100,7 +5165,7 @@ class UserAgentHandler {
     return response;
   }
 }
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/compressionHandlerOptions.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/options/compressionHandlerOptions.js
 var CompressionHandlerOptionsKey = "CompressionHandlerOptionsKey";
 
 class CompressionHandlerOptions {
@@ -5116,7 +5181,7 @@ class CompressionHandlerOptions {
   }
 }
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/compressionHandler.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/compressionHandler.js
 class CompressionHandler {
   constructor(handlerOptions = new CompressionHandlerOptions) {
     this.handlerOptions = handlerOptions;
@@ -5264,7 +5329,7 @@ class CompressionHandler {
 CompressionHandler.CONTENT_RANGE_HEADER = "Content-Range";
 CompressionHandler.CONTENT_ENCODING_HEADER = "Content-Encoding";
 
-// node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/middlewareFactory.js
+// ../node_modules/.pnpm/@microsoft+kiota-http-fetchlibrary@1.0.0-preview.78/node_modules/@microsoft/kiota-http-fetchlibrary/dist/es/src/middlewares/middlewareFactory.js
 class MiddlewareFactory {
   static getDefaultMiddlewares(customFetch = (...args) => fetch(...args)) {
     return [new RetryHandler, new RedirectHandler, new ParametersNameDecodingHandler, new UserAgentHandler, new CompressionHandler, new HeadersInspectionHandler, new CustomFetchHandler(customFetch)];
@@ -5274,14 +5339,18 @@ class MiddlewareFactory {
 function hello(name) {
   return "Hello, " + name;
 }
-var authProvider = new AnonymousAuthenticationProvider;
-var adapter = new FetchRequestAdapter(authProvider);
-var client = createFalahClient(adapter);
+function falah() {
+  const authProvider = new AnonymousAuthenticationProvider;
+  const adapter = new FetchRequestAdapter(authProvider);
+  const client = createFalahClient(adapter);
+  return client;
+}
 var main = async () => {
-  const response = await client.event.get();
+  const response = await falah().event.get();
   console.log(response);
 };
 main();
 export {
-  hello
+  hello,
+  falah as default
 };

@@ -1,8 +1,9 @@
 packages:
   - "server"
+  - "workshop"
   - "git"
   - "forms"
   - "apps/*"
-  - "falah-kit"
+  - "kiota"
   - "packages/*"
   - "providers/*"
