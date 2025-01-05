@@ -1,0 +1,69 @@
+{
+  "name": "@falah-club/falah-kit",
+  "version": "3.2.0",
+  "description": "npm registry to GitHub Package Registry example.",
+  "keywords": [
+    "example",
+    "github",
+    "npm"
+  ],
+  "homepage": "https://github.com/falah-club/falah-kit",
+  "bugs": {
+    "url": "https://github.com/falah-club/falah-kit/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/falah-club/falah-kit.git"
+  },
+  "license": "MIT",
+  "author": "azu",
+  "files": [
+    "bin/",
+    "lib/",
+    "src/"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production tsc -p .",
+    "clean": "rimraf lib/",
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+    "prepublish": "npm run --if-present build",
+    "test": "mocha \"test/**/*.ts\"",
+    "watch": "tsc -p . --watch",
+    "start": "bun src/index.ts"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": false,
+    "tabWidth": 4
+  },
+  "devDependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^13.1.0",
+    "bun": "*",
+    "cross-env": "^6.0.3",
+    "husky": "^3.1.0",
+    "lint-staged": "^9.5.0",
+    "mocha": "^6.2.2",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.0",
+    "ts-node": "^8.5.4",
+    "ts-node-test-register": "^8.0.1",
+    "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "@microsoft/kiota-abstractions": "1.0.0-preview.78",
+    "@microsoft/kiota-authentication-azure": "1.0.0-preview.61",
+    "@microsoft/kiota-bundle": "1.0.0-preview.9",
+    "@microsoft/kiota-http-fetchlibrary": "1.0.0-preview.78",
+    "@microsoft/kiota-serialization-form": "1.0.0-preview.78",
+    "@microsoft/kiota-serialization-json": "1.0.0-preview.78",
+    "@microsoft/kiota-serialization-multipart": "1.0.0-preview.78",
+    "@microsoft/kiota-serialization-text": "1.0.0-preview.78"
+  }
+}
