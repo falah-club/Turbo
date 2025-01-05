@@ -1,113 +1,19 @@
 // @ts-ignore
 import './styles/fonts.css';
 import './styles/style.css';
-import EventsCell from "./app/cells/EventsCell";
+import EventsCell from "./cells/events-cell";
 import BentoBox from "./app/components/BentoBox";
-import { Heading, Lead, Subheading } from './app/components/text'
-import {Gradient} from "./app/components/gradient";
-import { clsx } from 'clsx'
-import {Button} from './components/Button'
-import SignUpForm from './form'
+import { Button } from './components/Button';
+import SignUpForm from './form';
 import Categories from "./components/Categories";
-import useEvents from "./hooks/useEvents";
 import React, { useEffect } from 'react';
 
-export default function App() {
-  const { events, loading, error, getEvents } = useEvents();
-
-  // Fetch events on component mount
-  useEffect(() => {
-    const fetchEvents = async () => {
-      await getEvents();
-    };
-
-    fetchEvents();
-  }, [getEvents]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  return (
-    <EventList events={events}/>
-  );
-}
-
-const EventList = ({events}) => {
-  const eventKeys = Object.keys(events);
-
-  return (
-    <div className="relative py-24">
-      <Gradient className="absolute inset-x-2 bottom-0 top-48 rounded-4xl ring-1 ring-inset ring-black/5" />
-      <Container className="relative">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-1">
-        {eventKeys.map(key => {
-        const event = events[key];
-
-        // Format the start date (assuming it's in the format [year, month, day, hour, minute])
-        const startDate = new Date(
-          event.start[0], // year
-          event.start[1] - 1, // month (0-based index)
-          event.start[2], // day
-          event.start[3], // hour
-          event.start[4] // minute
-        );
-
-        // Format duration (assuming duration is in hours and minutes)
-        const durationHours = event.duration[0];
-        const durationMinutes = event.duration[1];
-
-        return (
-          <>
-            <PricingCard key={key} tier={tiers[0]} />
-          <div key={event.uid} className="event-card">
-            <h2>{event.title}</h2>
-            <p><strong>Description:</strong> {event.description}</p>
-            <p><strong>Location:</strong> {event.location}</p>
-            <p><strong>Start Date:</strong> {startDate.toLocaleString()}</p>
-            <p><strong>Duration:</strong> {durationHours} hours {durationMinutes} minutes</p>
-            <p><strong>Status:</strong> {event.status}</p>
-            <p><strong>Categories:</strong> {event.categories.join(", ")}</p>
-            <p><strong>Product ID:</strong> {event.product_id}</p>
-            <p><strong>Location Coordinates:</strong> Lat: {event.geo.lat}, Lon: {event.geo.lon}</p>
-            <p><strong>Radius:</strong> {event.geo.radius} meters</p>
-            <a href={event.url} target="_blank" rel="noopener noreferrer">Event Link</a>
-          </div>
-          </>
-        );
-      })}
-      </div>
-        {/*<LogoCloud className="mt-24" />*/}
-      </Container>
-    </div>
-  );
-};
-
-export function Container({
-  className,
-  children,
-}: {
-  className?: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className={clsx(className, 'px-6 lg:px-8')}>
-      <div className="mx-auto max-w-2xl lg:max-w-7xl">{children}</div>
-    </div>
-  )
-}
-
-
-const featuredPost = {
+const highlightedEvent = {
   id: 1,
   title: 'Meet up with the ummah',
   href: '#',
   description:
-    'See whats going on near you attend, enjoy a range of events',
+    'See what’s going on near you, attend, and enjoy a range of events.',
   date: 'Northampton',
   datetime: '2020-03-16',
   author: {
@@ -116,220 +22,42 @@ const featuredPost = {
     imageUrl:
       'https://raw.githubusercontent.com/tailwindlabs/heroicons/refs/heads/master/optimized/16/solid/arrow-down-right.svg',
   },
-}
-const posts = [
-  {
-    id: 2,
-    title: 'Boost your conversion rate',
-    href: '#',
-    description:
-      'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel iusto corrupti dicta laboris incididunt.',
-    date: 'Mar 10, 2020',
-    datetime: '2020-03-16',
-    author: {
-      name: 'Lindsay Walton',
-      href: '#',
-      imageUrl:
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-  },
-  // More posts...
-]
+};
 
-
-
-const tiers = [
-  {
-    name: 'Starter' as const,
-    slug: 'starter',
-    description: 'Everything you need to start selling.',
-    priceMonthly: 99,
-    href: '#',
-    highlights: [
-      { description: 'Up to 3 team members' },
-      { description: 'Up to 5 deal progress boards' },
-      { description: 'Source leads from select platforms' },
-      { description: 'Wheelchair access', disabled: true },
-    ],
-    features: [
-      { section: 'Features', name: 'Accounts', value: 3 },
-      { section: 'Features', name: 'Deal progress boards', value: 5 },
-      { section: 'Features', name: 'Sourcing platforms', value: 'Select' },
-      { section: 'Features', name: 'Contacts', value: 100 },
-      { section: 'Features', name: 'AI assisted outreach', value: false },
-      { section: 'Analysis', name: 'Competitor analysis', value: false },
-      { section: 'Analysis', name: 'Dashboard reporting', value: false },
-      { section: 'Analysis', name: 'Community insights', value: false },
-      { section: 'Analysis', name: 'Performance analysis', value: false },
-      { section: 'Support', name: 'Email support', value: true },
-      { section: 'Support', name: '24 / 7 call center support', value: false },
-      { section: 'Support', name: 'Dedicated account manager', value: false },
-    ],
-  },
-  {
-    name: 'Growth' as const,
-    slug: 'growth',
-    description: 'All the extras for your growing team.',
-    priceMonthly: 149,
-    href: '#',
-    highlights: [
-      { description: 'Up to 10 team members' },
-      { description: 'Unlimited deal progress boards' },
-      { description: 'Source leads from over 50 verified platforms' },
-      { description: 'RadiantAI integrations' },
-      { description: '5 competitor analyses per month' },
-    ],
-    features: [
-      { section: 'Features', name: 'Accounts', value: 10 },
-      { section: 'Features', name: 'Deal progress boards', value: 'Unlimited' },
-      { section: 'Features', name: 'Sourcing platforms', value: '100+' },
-      { section: 'Features', name: 'Contacts', value: 1000 },
-      { section: 'Features', name: 'AI assisted outreach', value: true },
-      { section: 'Analysis', name: 'Competitor analysis', value: '5 / month' },
-      { section: 'Analysis', name: 'Dashboard reporting', value: true },
-      { section: 'Analysis', name: 'Community insights', value: true },
-      { section: 'Analysis', name: 'Performance analysis', value: true },
-      { section: 'Support', name: 'Email support', value: true },
-      { section: 'Support', name: '24 / 7 call center support', value: true },
-      { section: 'Support', name: 'Dedicated account manager', value: false },
-    ],
-  },
-  {
-    name: 'Enterprise' as const,
-    slug: 'enterprise',
-    description: 'Added flexibility to close deals at scale.',
-    priceMonthly: 299,
-    href: '#',
-    highlights: [
-      { description: 'Unlimited active team members' },
-      { description: 'Unlimited deal progress boards' },
-      { description: 'Source leads from over 100 verified platforms' },
-      { description: 'RadiantAI integrations' },
-      { description: 'Unlimited competitor analyses' },
-    ],
-    features: [
-      { section: 'Features', name: 'Accounts', value: 'Unlimited' },
-      { section: 'Features', name: 'Deal progress boards', value: 'Unlimited' },
-      { section: 'Features', name: 'Sourcing platforms', value: '100+' },
-      { section: 'Features', name: 'Contacts', value: 'Unlimited' },
-      { section: 'Features', name: 'AI assisted outreach', value: true },
-      { section: 'Analysis', name: 'Competitor analysis', value: 'Unlimited' },
-      { section: 'Analysis', name: 'Dashboard reporting', value: true },
-      { section: 'Analysis', name: 'Community insights', value: true },
-      { section: 'Analysis', name: 'Performance analysis', value: true },
-      { section: 'Support', name: 'Email support', value: true },
-      { section: 'Support', name: '24 / 7 call center support', value: true },
-      { section: 'Support', name: 'Dedicated account manager', value: true },
-    ],
-  },
-]
-
-function FeatureItem({
-  description,
-  disabled = false,
-}: {
-  description: string
-  disabled?: boolean
-}) {
-  return (
-    <li
-      data-disabled={disabled ? true : undefined}
-      className="flex items-start gap-4 text-sm/6 text-gray-950/75 data-[disabled]:text-gray-950/25"
-    >
-      <span className="inline-flex h-6 items-center">
-        {/*<PlusIcon className="size-[0.9375rem] shrink-0 fill-gray-950/25" />*/}
-      </span>
-      {disabled && <span className="sr-only">Not included:</span>}
-      {description}
-    </li>
-  )
-}
-
-
-function PricingCard({ tier }: { tier: (typeof tiers)[number] }) {
-  return (
-    <div className="-m-2 grid grid-cols-1 rounded-4xl shadow-[inset_0_0_2px_1px_#ffffff4d] ring-1 ring-black/5 max-lg:mx-auto max-lg:w-full max-lg:max-w-md">
-      <div className="grid grid-cols-1 rounded-4xl p-2 shadow-md shadow-black/5">
-        <div className="rounded-3xl bg-white p-10 pb-9 shadow-2xl ring-1 ring-black/5">
-          <Subheading>{tier.name}</Subheading>
-          <p className="mt-2 text-sm/6 text-gray-950/75">{tier.description}</p>
-          <div className="mt-8 flex items-center gap-4">
-            <div className="text-5xl font-medium text-gray-950">
-              ${tier.priceMonthly}
-            </div>
-            <div className="text-sm/5 text-gray-950/75">
-              <p>USD</p>
-              <p>per month</p>
-            </div>
-          </div>
-          <div className="mt-8">
-            {/*<Button href={tier.href}>Start a free trial</Button>*/}
-          </div>
-          <div className="mt-8">
-            <h3 className="text-sm/6 font-medium text-gray-950">
-              Start selling with:
-            </h3>
-            <ul className="mt-3 space-y-3">
-              {tier.highlights.map((props, featureIndex) => (
-                <FeatureItem key={featureIndex} {...props} />
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function Grid() {
+function App() {
   return (
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-12 px-6 sm:gap-y-16 lg:grid-cols-2 lg:px-8">
         <article className="mx-auto w-full max-w-2xl lg:mx-0 lg:max-w-lg">
-          <Button variant={"outline"}>
-            {featuredPost.date}
-            </Button>
+          <Button variant="outline">
+            {highlightedEvent.date}
+          </Button>
           <h2
-            id="featured-post"
+            id="highlighted-event"
             className="mt-4 text-pretty text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl"
           >
-            {featuredPost.title}
+            {highlightedEvent.title}
           </h2>
-          <p className="mt-4 text-lg/8 text-gray-600">{featuredPost.description}</p>
-          <Categories/>
+          <p className="mt-4 text-lg/8 text-gray-600">{highlightedEvent.description}</p>
+          <Categories />
           <div className="mt-4 flex flex-col justify-between gap-6 sm:mt-8 sm:flex-row-reverse sm:gap-8 lg:mt-4 lg:flex-col">
-            <SignUpForm/>
-            {/*<div className="flex">*/}
-            {/*  <a*/}
-            {/*    href={featuredPost.href}*/}
-            {/*    aria-describedby="featured-post"*/}
-            {/*    className="text-sm/6 font-semibold text-indigo-600"*/}
-            {/*  >*/}
-            {/*    Continue reading <span aria-hidden="true">&rarr;</span>*/}
-            {/*  </a>*/}
-            {/*</div>*/}
+            <SignUpForm />
             <div className="flex lg:border-t lg:border-gray-900/10 lg:pt-8">
-              <a href={featuredPost.author.href} className="flex gap-x-2.5 text-sm/6 font-semibold text-gray-900">
-                <img alt="" src={featuredPost.author.imageUrl} className="size-6 flex-none rounded-full bg-gray-50" />
-                {featuredPost.author.name}
-              </a>
-              <a href={featuredPost.author.href} className="flex gap-x-2.5 text-sm/6 font-semibold text-gray-900">
-                <img alt="" src={featuredPost.author.imageUrl} className="size-6 flex-none rounded-full bg-gray-50" />
-                {featuredPost.author.name}
+              <a href={highlightedEvent.author.href} className="flex gap-x-2.5 text-sm/6 font-semibold text-gray-900">
+                <img alt="" src={highlightedEvent.author.imageUrl} className="size-6 flex-none rounded-full bg-gray-50" />
+                {highlightedEvent.author.name}
               </a>
             </div>
           </div>
         </article>
         <div className="mx-auto w-full max-w-2xl border-t border-gray-900/10 pt-12 sm:pt-16 lg:mx-0 lg:max-w-none lg:border-t-0 lg:pt-0">
           <div className="-my-12 divide-y divide-gray-900/10">
-            <PricingCards/>
+            <EventsCell />
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
-
-
 
 export default App;
