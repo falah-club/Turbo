@@ -10,11 +10,11 @@ const authProvider = new AnonymousAuthenticationProvider();
 const adapter = new FetchRequestAdapter(authProvider);
 // Create the API client
 
-const client = createFalahClient({...adapter, {baseUrl :"http://127.0.0.1:5800"}});
+const client = createFalahClient(adapter);
 const main = async () => {
   // @ts-ignore
-  const allEvents = await client.event.get()
-  console.log(allEvents)
+  const response = await client.event.get(); // Assuming it returns a response object
+  console.log(response); // Now you should get the actual data
 };
 
 // Execute the anonymous function

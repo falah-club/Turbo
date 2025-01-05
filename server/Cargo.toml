@@ -5,7 +5,7 @@ edition = "2021"
 publish = false
 
 [dependencies]
-salvo = { version = "0.75.0", features = [ "oapi", "anyhow", "jwt-auth"] }
+salvo = { version = "0.75.0", features = [ "oapi","cors", "anyhow", "jwt-auth"] }
 tokio = { version = "1", features = ["macros", "rt", "rt-multi-thread"] }
 tracing = "0.1"
 tracing-subscriber = "0.3"

@@ -29,6 +29,9 @@ export function createFalahClient(requestAdapter: RequestAdapter) {
     registerDefaultDeserializer(JsonParseNodeFactory);
     registerDefaultDeserializer(TextParseNodeFactory);
     registerDefaultDeserializer(FormParseNodeFactory);
+    if (requestAdapter.baseUrl === undefined || requestAdapter.baseUrl === null || requestAdapter.baseUrl === "") {
+        requestAdapter.baseUrl = "http://127.0.0.1:5800";
+    }
     const pathParameters: Record<string, unknown> = {
         "baseurl": requestAdapter.baseUrl,
     };

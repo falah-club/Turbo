@@ -28,9 +28,9 @@ export interface EventRequestBuilder extends BaseRequestBuilder<EventRequestBuil
      * Creates a new event with the provided data.
      * @param body The request body
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
-     * @returns {Promise<string>}
+     * @returns {Promise<ArrayBuffer>}
      */
-     post(body: Event, requestConfiguration?: RequestConfiguration<object> | undefined) : Promise<string | undefined>;
+     post(body: Event, requestConfiguration?: RequestConfiguration<object> | undefined) : Promise<ArrayBuffer | undefined>;
     /**
      * Fetches a list of events with optional offset and limit for pagination.
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
@@ -69,10 +69,9 @@ export const EventRequestBuilderRequestsMetadata: RequestsMetadata = {
     },
     post: {
         uriTemplate: EventRequestBuilderUriTemplate,
-        responseBodyContentType: "text/plain;q=0.9",
         adapterMethodName: "sendPrimitive",
-        responseBodyFactory:  "string",
-        requestBodyContentType: "application/x-www-form-urlencoded",
+        responseBodyFactory:  "ArrayBuffer",
+        requestBodyContentType: "application/json",
         requestBodySerializer: serializeEvent,
         requestInformationContentSetMethod: "setContentFromParsable",
     },

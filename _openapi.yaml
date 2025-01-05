@@ -16,7 +16,9 @@ paths:
       summary: Retrieve a list of events
       description: Fetches a list of events with optional offset and limit for pagination.
       operationId: server.get_events
-      responses: {}
+      responses:
+        '200':
+          description: success response
     post:
       tags:
       - event
@@ -31,11 +33,7 @@ paths:
               $ref: '#/components/schemas/server.event.Event'
       responses:
         '200':
-          description: Ok
-          content:
-            text/plain:
-              schema:
-                type: string
+          description: success response
   /event/{id}:
     get:
       tags:
@@ -52,7 +50,9 @@ paths:
         required: true
         schema:
           type: string
-      responses: {}
+      responses:
+        '200':
+          description: success response
     delete:
       tags:
       - event
@@ -68,7 +68,9 @@ paths:
         required: true
         schema:
           type: string
-      responses: {}
+      responses:
+        '200':
+          description: success response
     patch:
       tags:
       - event
@@ -84,7 +86,9 @@ paths:
         required: true
         schema:
           type: string
-      responses: {}
+      responses:
+        '200':
+          description: success response
   /subscription/calendar:
     get:
       tags:
@@ -95,7 +99,9 @@ paths:
       summary: Generate a calendar of events
       description: Queries the database for events and creates a ical.
       operationId: server.event_calendar_subscription
-      responses: {}
+      responses:
+        '200':
+          description: success response
   /subscription/feed:
     get:
       tags:
@@ -106,7 +112,9 @@ paths:
       summary: Generate a rss feed of events
       description: Queries the database for events and creates a rss feed.
       operationId: server.event_feed_subscription
-      responses: {}
+      responses:
+        '200':
+          description: success response
 components:
   schemas:
     server.event.Event:

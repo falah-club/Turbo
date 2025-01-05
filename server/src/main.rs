@@ -3,7 +3,7 @@ mod subscription;
 mod info;
 mod event;
 mod auth;
-
+use salvo::prelude::Json;
 use std::fs::File;
 use std::io::Write;
 use std::mem;
@@ -11,13 +11,15 @@ use std::path::Path;
 use lazy_static::lazy_static;
 use std::sync::Mutex;
 use rusqlite::{params, Connection, Result};
-use salvo::oapi::__private::serde_json::json;
 use salvo::oapi::extract::JsonBody;
 use salvo::prelude::*;
 use crate::event::{Event, Geo};
 use crate::html::INDEX_HTML;
 use crate::subscription::ical::generate_ics;
 use crate::subscription::rss::rss;
+use salvo::cors::Cors;
+use salvo::Error;
+use salvo::http::Method;
 
 // Lazy static connection, using Mutex for thread safety
 lazy_static! {
@@ -27,27 +29,37 @@ lazy_static! {
 
 // Endpoint to get all events
 #[endpoint(
-    tags("event", "crud"),
     summary = "Retrieve a list of events",
     description = "Fetches a list of events with optional offset and limit for pagination.",
-    tags("event", "pagination"),
+    tags("event", "pagination", "crud"),
+    responses(
+        (status_code = 200, description = "Success response", body = Event, description = "Array of events")
+    )
 )]
-async fn get_events(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
-    // let id = _req.param::<i64>("id").unwrap();
+async fn get_events() -> Json<Vec<Event>> {
+    // Fetch the events from the database
     let events = event::read_events().await;
-    res.render(&format!("{:?}", events));
+
+
+    match events {
+        Ok(events) => Json(events), // Return the events in JSON format
+        Err(_) => Json(vec![]), // Return an empty array if there’s an error
+    }
 }
 
 // Endpoint to create a new event
 #[endpoint(
     tags("event", "crud"),
     summary = "Create a event",
-    tags("event"),
     description = "Creates a new event with the provided data.",
-)]
-async fn post_event(json: JsonBody<Event>) -> String {
+    responses(
+        (status_code = 201, description = "success response"),
+        (status_code = 409, description = "error response"),
+    )
+   )]
+async fn post_event(json: JsonBody<Event>, res: &mut Response)-> Result<StatusCode, Error> {
     let event = json.into_inner();
-    format!("Updated user with ID: {}", event.uid)
+    Ok(StatusCode::CREATED)
 }
 
 
@@ -58,8 +70,11 @@ async fn post_event(json: JsonBody<Event>) -> String {
     tags("event", "slug", "crud"),
     parameters(
         ("id" = String, Path, description = "The event ID")
-    )
-)]
+    ),
+    responses(
+        (status_code = 200, description = "success response")
+    ))]
+
 async fn get_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
     let id = _req.param::<i64>("id").unwrap();
     res.render(&format!("Hello {} world", id));
@@ -72,8 +87,10 @@ async fn get_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _
     tags("event", "slug", "crud"),
     parameters(
         ("id" = String, Path, description = "The event ID")
-    )
-)]
+    ),
+    responses(
+        (status_code = 200, description = "success response")
+    ))]
 async fn patch_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
     res.render("Hello world");
 }
@@ -86,8 +103,11 @@ async fn patch_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response,
     tags("event", "slug", "crud"),
     parameters(
         ("id" = String, Path, description = "The event ID")
+    ),
+    responses(
+        (status_code = 200, description = "success response")
     )
-)]
+    )]
 async fn delete_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
 
     res.render("Hello world");
@@ -98,8 +118,9 @@ async fn delete_event(_req: &mut Request, _depot: &mut Depot, res: &mut Response
     tags("subscription","slug", "feed", "crud"),
     summary = "Generate a rss feed of events",
     description = "Queries the database for events and creates a rss feed.",
-
-)]
+    responses(
+        (status_code = 200, description = "success response")
+    ))]
 async fn event_feed_subscription(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
     let events = event::read_events().await;
     let feed = rss(events);
@@ -112,8 +133,9 @@ async fn event_feed_subscription(_req: &mut Request, _depot: &mut Depot, res: &m
     tags("subscription","slug", "calendar", "crud"),
     summary = "Generate a calendar of events",
     description = "Queries the database for events and creates a ical.",
-
-)]
+    responses(
+        (status_code = 200, description = "success response")
+    ))]
 async fn event_calendar_subscription(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
     let events = event::read_events().await;
     let ics_data = generate_ics("My Calendar", events, Some("https://mycalendar.com/feed"));
@@ -121,7 +143,6 @@ async fn event_calendar_subscription(_req: &mut Request, _depot: &mut Depot, res
     res.add_header("Content-Type", "text/calendar", false).unwrap();    // Render the ICS data as the response body
     res.render(ics_data);
 }
-
 
 
 
@@ -231,6 +252,7 @@ async fn main() -> Result<()> {
                         .get(event_calendar_subscription)
                 ),
         );
+
     // Now you can call the function from api_info.rs
     let api_info = info::get_api_info();
     let doc = OpenApi::with_info(api_info)
@@ -278,9 +300,15 @@ async fn main() -> Result<()> {
 //    let acceptor = TcpListener::new("127.0.0.1:5800").bind().await;
 //    Server::new(acceptor).serve(service).await;
 
-    // Start the server
+    let cors = Cors::new()
+        .allow_origin("*")
+        .allow_methods(vec![Method::GET, Method::POST, Method::DELETE, Method::OPTIONS, Method::PUT, Method::PATCH])
+        .into_handler();
+
+    let service = Service::new(router).hoop(cors);
+
     let acceptor = TcpListener::new("127.0.0.1:5800").bind().await;
-    Server::new(acceptor).serve(router).await;
+    Server::new(acceptor).serve(service).await;
 
     Ok(())
 }

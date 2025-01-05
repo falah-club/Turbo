@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "build": "npx lerna run build",
+    "generate": "node kiota.js",
     "dev": "pnpm install && npx lerna run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
@@ -13,7 +14,8 @@
     "eslint-config-custom": "workspace:*",
     "lerna": "^8.1.9",
     "nx": "20.3.0",
-    "prettier": "^3.4.2"
+    "prettier": "^3.4.2",
+    "js-yaml" : "*"
   },
   "packageManager": "pnpm@9.15.2",
   "name": "falah-club",
