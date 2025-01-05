@@ -41,8 +41,11 @@ const EventList = ({events}) => {
   const eventKeys = Object.keys(events);
 
   return (
-    <div>
-      {eventKeys.map(key => {
+    <div className="relative py-24">
+      <Gradient className="absolute inset-x-2 bottom-0 top-48 rounded-4xl ring-1 ring-inset ring-black/5" />
+      <Container className="relative">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-1">
+        {eventKeys.map(key => {
         const event = events[key];
 
         // Format the start date (assuming it's in the format [year, month, day, hour, minute])
@@ -59,6 +62,8 @@ const EventList = ({events}) => {
         const durationMinutes = event.duration[1];
 
         return (
+          <>
+            <PricingCard key={key} tier={tiers[0]} />
           <div key={event.uid} className="event-card">
             <h2>{event.title}</h2>
             <p><strong>Description:</strong> {event.description}</p>
@@ -72,8 +77,12 @@ const EventList = ({events}) => {
             <p><strong>Radius:</strong> {event.geo.radius} meters</p>
             <a href={event.url} target="_blank" rel="noopener noreferrer">Event Link</a>
           </div>
+          </>
         );
       })}
+      </div>
+        {/*<LogoCloud className="mt-24" />*/}
+      </Container>
     </div>
   );
 };
@@ -128,21 +137,6 @@ const posts = [
 ]
 
 
-function PricingCards() {
-  return (
-    <div className="relative py-24">
-      <Gradient className="absolute inset-x-2 bottom-0 top-48 rounded-4xl ring-1 ring-inset ring-black/5" />
-      <Container className="relative">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-1">
-          {tiers.map((tier, tierIndex) => (
-            <PricingCard key={tierIndex} tier={tier} />
-          ))}
-        </div>
-        {/*<LogoCloud className="mt-24" />*/}
-      </Container>
-    </div>
-  )
-}
 
 const tiers = [
   {
@@ -155,8 +149,7 @@ const tiers = [
       { description: 'Up to 3 team members' },
       { description: 'Up to 5 deal progress boards' },
       { description: 'Source leads from select platforms' },
-      { description: 'RadiantAI integrations', disabled: true },
-      { description: 'Competitor analysis', disabled: true },
+      { description: 'Wheelchair access', disabled: true },
     ],
     features: [
       { section: 'Features', name: 'Accounts', value: 3 },
