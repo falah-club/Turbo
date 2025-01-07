@@ -39,7 +39,9 @@ export function Button({
   className = clsx(className, variants[variant])
 
   if (typeof props.href === 'undefined') {
-    return <Headless.Button {...props} className={className} />
+    return <button onClick={()=>{props.cb()}} {...props} className={className}>
+      {props.children}
+     </button>
   }
 
   return <Link {...props} className={className} />

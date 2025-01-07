@@ -1,4 +1,1 @@
-import * as Home from './home/route';
-import * as Posts from './posts/route';
-
-export default [Home, Posts];
+export const api = "http://127.0.0.1:5800"

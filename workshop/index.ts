@@ -1,4 +1,4 @@
-import falah from "@falah-club/falah-kit";
+import falah from "@falah-club/falah";
 
 const main = async () => {
 

@@ -1,5 +1,5 @@
 use chrono::{NaiveDate, NaiveDateTime, NaiveTime, Utc};
-use crate::event::{Event};
+use crate::event::Event;
 
 // Generate Apple-specific structured location string
 fn apple_structured_location(ev: &Event) -> Option<String> {
@@ -14,13 +14,12 @@ fn apple_structured_location(ev: &Event) -> Option<String> {
 
 // Format a single event into iCalendar format
 fn format_event(ev: &Event) -> String {
-    // Use `from_ymd_opt` and `from_hms_opt` to avoid deprecation warnings
     let start_time = match NaiveDate::from_ymd_opt(ev.start[0], ev.start[1] as u32, ev.start[2] as u32) {
         Some(date) => match NaiveTime::from_hms_opt(ev.start[3] as u32, ev.start[4] as u32, 0) {
             Some(time) => NaiveDateTime::new(date, time),
-            None => return String::new(),  // Invalid time
+            None => return String::new(), // Invalid time
         },
-        None => return String::new(),  // Invalid date
+        None => return String::new(), // Invalid date
     };
 
     // Calculate end time based on duration
@@ -34,7 +33,7 @@ fn format_event(ev: &Event) -> String {
     let mut event_data = format!(
         "BEGIN:VEVENT\r\nUID:{}\r\nDTSTAMP:{}\r\nDTSTART:{}\r\nDTEND:{}\r\nSUMMARY:{}\r\nDESCRIPTION:{}\r\nLOCATION:{}\r\nURL:{}\r\nSTATUS:{}\r\nSEQUENCE:{}\r\n",
         ev.uid,
-        dtstamp,  // Add DTSTAMP here
+        dtstamp,
         start_time.format("%Y%m%dT%H%M%S"),
         end_time.format("%Y%m%dT%H%M%S"),
         ev.title,
@@ -47,7 +46,7 @@ fn format_event(ev: &Event) -> String {
 
     // Add Apple structured location markup if available
     if let Some(loc_markup) = apple_structured_location(ev) {
-        event_data.push_str(&format!("\r\n{}", loc_markup));
+        event_data.push_str(&format!("{}\r\n", loc_markup));
     }
 
     event_data.push_str("END:VEVENT\r\n");
@@ -55,7 +54,7 @@ fn format_event(ev: &Event) -> String {
 }
 
 // Public function to generate complete iCalendar file content
-pub fn generate_ics(title: &str, events:Vec<Event>, feed_url: Option<&str>) -> String {
+pub fn generate_ics(title: &str, events: Vec<Event>, feed_url: Option<&str>) -> String {
     let mut ics = String::new();
 
     // Add the VCALENDAR header to start the iCalendar
@@ -63,7 +62,10 @@ pub fn generate_ics(title: &str, events:Vec<Event>, feed_url: Option<&str>) -> S
 
     // Generate event data
     for ev in events {
-        ics.push_str(&format_event(&ev));
+        let formatted_event = format_event(&ev);
+        if !formatted_event.is_empty() {
+            ics.push_str(&formatted_event);
+        }
     }
 
     // Add feed metadata and close the calendar

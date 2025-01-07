@@ -4,34 +4,6 @@ import {Gradient} from "../app/components/gradient";
 import {Container} from "../components/Container";
 import {Subheading} from "../app/components/text";
 
-export default function EventsCell() {
-  const { events, loading, error, getEvents } = useEvents();
-
-  // Fetch events on component mount
-  useEffect(() => {
-    const fetchEvents = async () => {
-      await getEvents();
-    };
-
-    fetchEvents();
-  }, [getEvents]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!events) {
-    return <div>Emprty...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  return (
-    <EventList events={events}/>
-  );
-}
 
 function InnerEventCard({ event }) {
   // Format the start date
@@ -49,6 +21,7 @@ function InnerEventCard({ event }) {
 
   return (
       <>
+        {/*{JSON.stringify(event)}*/}
       {/* Event Image */}
       <div className="h-48 bg-gray-200 flex items-center justify-center">
         {/* Placeholder image */}
@@ -158,7 +131,7 @@ function FeatureItem({
 //      </li>
     )
   }
-const EventList = ({events}) => {
+const EventsCell = ({events}) => {
   const eventKeys = Object.keys(events);
 
   return (
@@ -180,3 +153,5 @@ const EventList = ({events}) => {
     </div>
   );
 };
+
+export default EventsCell
