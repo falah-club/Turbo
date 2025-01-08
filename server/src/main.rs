@@ -133,7 +133,9 @@ async fn event_feed_subscription(_req: &mut Request, _depot: &mut Depot, res: &m
     ))]
 async fn event_calendar_subscription(_req: &mut Request, _depot: &mut Depot, res: &mut Response, _ctrl: &mut FlowCtrl) {
     let events = event::read_events().await;
-    let ics_data = generate_ics("My Calendar", events, Some("https://mycalendar.com/feed"));
+    let calendar_name = "All Islamic events in Luton";
+    let calendar_url = "https://falah.club/meet";
+    let ics_data = generate_ics(calendar_name, events, Some(calendar_url));
     // Set the Content-Type header to text/calendar
     res.add_header("Content-Type", "text/calendar", false).unwrap();    // Render the ICS data as the response body
     res.render(ics_data);
